@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import {Card} from 'material-ui';
+import {Card, CardTitle} from 'material-ui';
+import Dialog from 'material-ui/Dialog';
 
 class LogInScreen extends Component {
 
@@ -11,11 +13,17 @@ class LogInScreen extends Component {
       let loginScreen = this
       fetch('http://localhost:8080/api/login', {headers: new Headers({
                   'Content-Type': 'application/json'
-              }), method: 'POST', body: JSON.stringify({"username":"pilar","password":"architect123"}) })
+              }), method: 'POST', body: JSON.stringify({"username":loginScreen.state.username,"password":loginScreen.state.password}) })
               .then(function(res) {
                   return res.json();
               }).then(function(json) {
-                loginScreen.setState({'active_user' : json})
+                if(json.status == "error"){
+                  loginScreen.setState({'username':'', 'password':'','open':true})
+                } else {
+                  loginScreen.setState({'active_user' : json})
+                }
+
+
               });
   }
 
@@ -27,6 +35,9 @@ class LogInScreen extends Component {
     this.setState({'password': event.target.value })
   }
 
+  handleClose = () => {
+    this.setState({open: false});
+  };
 
 
   constructor(props) {
@@ -34,20 +45,42 @@ class LogInScreen extends Component {
     this.state = {
       username: '',
       password: '',
-      active_user : {}
+      active_user : {},
+      open:false,
     }
 
     this.onChangePassword = this.onChangePassword.bind(this)
     this.onChangeUsername = this.onChangeUsername.bind(this)
+    this.handleClose = this.handleClose.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
   }
 
 
   render() {
+    const actions = [
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onTouchTap={this.handleClose}
+          />,
+          <FlatButton
+            label="Aceptar"
+            primary={true}
+            onTouchTap={this.handleClose}
+          />,
+    ];
+
     return (
       <div>
         <MuiThemeProvider>
           <div>
+            <Dialog
+          title="El usuario o la contraseña son incorrectos!"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          />
             <Card className="container">
               <h2 className="card-heading">Login</h2>
               <div className="field-line">
