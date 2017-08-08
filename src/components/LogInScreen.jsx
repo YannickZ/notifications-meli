@@ -6,13 +6,28 @@ import {Card} from 'material-ui';
 
 class LogInScreen extends Component {
 
+
+  onChangeUsername = event =>{
+    this.setState({'username': event.target.value })
+  }
+
+  onChangePassword = event =>{
+    this.setState({'username': event.target.value })
+  }
+
+
+
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: ''
     }
+
+    this.onChangePassword = this.onChangePassword.bind(this)
+    this.onChangeUsername = this.onChangeUsername.bind(this)
   }
+
 
   render() {
     return (
@@ -22,11 +37,11 @@ class LogInScreen extends Component {
             <Card className="container">
               <h2 className="card-heading">Login</h2>
               <div className="field-line">
-                <TextField floatingLabelText="Username" name="username"/>
+                <TextField floatingLabelText="Username" name="username" onChange={this.onChangeUsername}/>
               </div>
 
               <div className="field-line">
-                <TextField floatingLabelText="Password" type="password" name="password"/>
+                <TextField floatingLabelText="Password" type="password" name="password" onChange={this.onChangePassword}/>
               </div>
 
               <div className="button-line">
