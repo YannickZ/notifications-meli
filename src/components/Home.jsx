@@ -1,5 +1,6 @@
 import React from 'react'
-
+import AppBar from 'material-ui/AppBar';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class Home extends React.Component {
 
@@ -16,7 +17,12 @@ class Home extends React.Component {
     return(
       <div>
       { this.props.location.state ?
-           <h1>Bienvenido, {this.props.location.state.user.username} !</h1>
+        <MuiThemeProvider>
+        <AppBar
+          title={"Bienvenido, " + this.props.location.state.user.username + "!"}
+          iconClassNameRight="muidocs-icon-navigation-expand-more"
+        />
+      </MuiThemeProvider>
          : null}
        </div>
     );
