@@ -5,9 +5,14 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import {Card, CardTitle} from 'material-ui';
 import Dialog from 'material-ui/Dialog';
+import { withRouter } from 'react-router';
+import PropTypes from "prop-types";
 
-class LogInScreen extends Component {
+class LogInScreen extends React.Component {
 
+  static contextTypes = {
+    router: PropTypes.object
+  }
 
   handleLogin = () =>{
       let loginScreen = this
@@ -21,6 +26,7 @@ class LogInScreen extends Component {
                   loginScreen.setState({'username':'', 'password':'','open':true})
                 } else {
                   loginScreen.setState({'active_user' : json})
+                  loginScreen.context.router.history.push("/home", {user: json});
                 }
 
 
@@ -40,8 +46,8 @@ class LogInScreen extends Component {
   };
 
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       username: '',
       password: '',
@@ -71,6 +77,7 @@ class LogInScreen extends Component {
     ];
 
     return (
+
       <div>
         <MuiThemeProvider>
           <div>
