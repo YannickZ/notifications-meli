@@ -10,28 +10,22 @@ import PropTypes from "prop-types";
 
 class LogInScreen extends React.Component {
 
-  static contextTypes = {
-    router: PropTypes.object
-  }
-
-  handleLogin = () =>{
-      let loginScreen = this
-      fetch('http://localhost:8080/api/login', {headers: new Headers({
-                  'Content-Type': 'application/json'
-              }), method: 'POST', body: JSON.stringify({"username":loginScreen.state.username,"password":loginScreen.state.password}) })
-              .then(function(res) {
-                  return res.json();
-              }).then(function(json) {
-                if(json.status == "error"){
-                  loginScreen.setState({'username':'', 'password':'','open':true})
-                } else {
-                  loginScreen.setState({'active_user' : json})
-                  loginScreen.context.router.history.push("/home", {user: json});
-                }
-
-
-              });
-  }
+handleLogin = () => {
+  fetch('http://localhost:8080/api/login', {
+    headers: new Headers({'Content-Type': 'application/json'}),
+    method: 'POST',
+    body: JSON.stringify({"username": this.state.username, "password": this.state.password})
+  }).then((res) =>{
+    return res.json();
+  }).then((json) => {
+    if (json.status == "error") {
+      this.setState({'username': '', 'password': '', 'open': true})
+    } else {
+      this.setState({'active_user': json})
+      this.props.history.push("/home", {user: json});
+    }
+  });
+}
 
   onChangeUsername = event =>{
     this.setState({'username': event.target.value })
