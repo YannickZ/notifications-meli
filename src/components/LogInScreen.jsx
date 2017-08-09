@@ -22,7 +22,7 @@ handleLogin = () => {
       this.setState({'username': '', 'password': '', 'open': true})
     } else {
       this.setState({'active_user': json})
-      this.props.history.push("/home", {user: json});
+      this.props.history.push("/home", {user: json,logged: false});
     }
   });
 }
