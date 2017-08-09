@@ -13,12 +13,22 @@ class Home extends React.Component {
   }
 
   handleNotifications = () =>{
-    
+    fetch('http://localhost:8080/api/user/'+this.state.user.username+'/notifications')
+    .then(response=>response.json().then(notifications=>{
+        if (notifications.status == "ok"){
+            this.setState({'notifications' : notifications})
+        }
+}))
+
   }
 
   constructor(props){
     super(props);
     console.log(props)
+    this.state = {
+      'user' : this.props.location.state.user,
+      'notifications': {}
+    }
 
     if (typeof(this.props.location.state) == 'undefined'){
       this.props.history.push("/");
@@ -31,10 +41,11 @@ class Home extends React.Component {
       { this.props.location.state ?
         <MuiThemeProvider>
         <AppBar
-          title={"Bienvenido, " + this.props.location.state.user.username + "!"}
+          title={"Bienvenido, " + this.state.user.username + "!"}
           iconElementRight={
             <div>
               <IconButton
+              onClick = {this.handleNotifications}
               iconClassName="material-icons"
               tooltip="Mostrar notificaciones"
               >
